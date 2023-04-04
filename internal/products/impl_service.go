@@ -11,6 +11,17 @@ type service struct{
 	rp Repository
 }
 
+func (s *service) Create(pr *domain.Product) (err error){
+    var lastId int
+	lastId, err = s.rp.Create(pr)
+	if err != nil {
+		err = ErrServiceInternal
+		return
+	}
+	pr.ID = lastId
+	return
+}
+
 func (s *service) GetById(id int) (pr *domain.Product, err error) {
 	pr, err = s.rp.GetById(id)
 	if err != nil {

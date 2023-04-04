@@ -16,6 +16,19 @@ type repositoryLocal struct {
 	lastId int
 }
 
+func (rp *repositoryLocal) Create(pr *domain.Product) (lastId int, err error) {
+	// set id
+    rp.lastId++
+	pr.ID = rp.lastId
+
+	//append to db
+	rp.db = append(rp.db, pr)
+
+	//return lastId
+	lastId = rp.lastId
+    return
+}
+
 
 func (rp *repositoryLocal) GetById(id int) (pr *domain.Product, err error) {
 	for _, p := range rp.db {
@@ -28,3 +41,4 @@ func (rp *repositoryLocal) GetById(id int) (pr *domain.Product, err error) {
 	err = ErrRepoNotFound
 	return
 }
+

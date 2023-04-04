@@ -24,6 +24,12 @@ func main() {
 	
 	prGroup := sv.Group("/products")
 	{
+		prGroup.POST("", ct.Create())
         prGroup.GET("/:id", ct.GetById())
+	}
+
+	// run
+	if err := sv.Run(); err != nil {
+		panic(err)
 	}
 }
