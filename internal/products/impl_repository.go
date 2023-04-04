@@ -29,6 +29,10 @@ func (rp *repositoryLocal) Create(pr *domain.Product) (lastId int, err error) {
     return
 }
 
+func (rp *repositoryLocal) GetAll() ([]*domain.Product, error) {
+	return rp.db, nil
+}
+
 
 func (rp *repositoryLocal) GetById(id int) (pr *domain.Product, err error) {
 	for _, p := range rp.db {

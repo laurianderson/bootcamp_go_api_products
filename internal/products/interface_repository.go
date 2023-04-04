@@ -8,6 +8,7 @@ type Repository interface {
 //crear método para leer el json que usaremos como db temporalmente
 //	ReadJsonDB() []domain.Product
 	Create(pr *domain.Product) (lastId int, err error)
+	GetAll() ([]*domain.Product, error)
 	GetById(id int) (pr *domain.Product, err error)
 }
 

@@ -22,6 +22,10 @@ func (s *service) Create(pr *domain.Product) (err error){
 	return
 }
 
+func (s *service) GetAll() ([]*domain.Product, error){
+	return s.rp.GetAll()
+}
+
 func (s *service) GetById(id int) (pr *domain.Product, err error) {
 	pr, err = s.rp.GetById(id)
 	if err != nil {

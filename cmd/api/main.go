@@ -25,6 +25,7 @@ func main() {
 	prGroup := sv.Group("/products")
 	{
 		prGroup.POST("", ct.Create())
+		prGroup.GET("", ct.GetAll())
         prGroup.GET("/:id", ct.GetById())
 	}
 

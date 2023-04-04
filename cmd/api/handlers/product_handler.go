@@ -59,6 +59,21 @@ func(ct *ControllerProduct) Create() gin.HandlerFunc{
 	}
 }
 
+func(ct *ControllerProduct) GetAll() gin.HandlerFunc{
+	return func(ctx *gin.Context){
+		//request
+
+		//process
+		prs, err := ct.sv.GetAll()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get movies"})
+			return
+		}
+        //response
+        ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": prs})
+    }
+}
+
 func (ct *ControllerProduct) GetById() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 		// request
