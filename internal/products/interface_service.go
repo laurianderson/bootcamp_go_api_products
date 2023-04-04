@@ -6,7 +6,7 @@ import(
 )
 
 type Service interface{
-	GetId(id int) (pr *domain.Product , err error)
+	GetById(id int) (pr *domain.Product , err error)
 }
 
 var (

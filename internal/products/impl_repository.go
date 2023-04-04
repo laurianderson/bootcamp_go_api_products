@@ -2,7 +2,7 @@ package products
 
 import "github.com/laurianderson/bootcamp_go_api_products/internal/domain"
 
-//construct
+//builder
 func NewRepositoryLocal(db []*domain.Product, lastId int) Repository {
 	return &repositoryLocal{
 		db: db,
@@ -17,7 +17,7 @@ type repositoryLocal struct {
 }
 
 
-func (rp *repositoryLocal) GetId(id int) (pr *domain.Product, err error) {
+func (rp *repositoryLocal) GetById(id int) (pr *domain.Product, err error) {
 	for _, p := range rp.db {
 		if p.ID == id {
                 pr = p

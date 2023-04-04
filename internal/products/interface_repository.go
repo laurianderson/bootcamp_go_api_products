@@ -7,7 +7,7 @@ import(
 type Repository interface {
 //crear método para leer el json que usaremos como db temporalmente
 //	ReadJsonDB() []domain.Product
-	GetId(id int) (pr *domain.Product, err error)
+	GetById(id int) (pr *domain.Product, err error)
 
 }
 
