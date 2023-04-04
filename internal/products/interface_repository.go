@@ -10,6 +10,7 @@ type Repository interface {
 	Create(pr *domain.Product) (lastId int, err error)
 	GetAll() ([]*domain.Product, error)
 	GetById(id int) (pr *domain.Product, err error)
+	Update(id int, pr *domain.Product) (err error)
 }
 
 var(

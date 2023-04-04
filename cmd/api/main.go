@@ -27,6 +27,7 @@ func main() {
 		prGroup.POST("", ct.Create())
 		prGroup.GET("", ct.GetAll())
         prGroup.GET("/:id", ct.GetById())
+		prGroup.PUT("/:id", ct.Update())
 	}
 
 	// run

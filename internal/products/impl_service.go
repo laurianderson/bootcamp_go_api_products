@@ -38,3 +38,15 @@ func (s *service) GetById(id int) (pr *domain.Product, err error) {
 	return
 
 }
+
+func (s *service) Update(id int, pr *domain.Product) (err error) {
+	err = s.rp.Update(id, pr)
+    if err!= nil {
+        if err == ErrRepoNotFound {
+			err = ErrServiceNotFound
+			return
+		}
+		err = ErrServiceInternal
+    }
+    return
+}

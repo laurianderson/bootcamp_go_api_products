@@ -9,6 +9,7 @@ type Service interface{
 	Create(pr *domain.Product) (err error)
 	GetAll() ([]*domain.Product, error)
 	GetById(id int) (pr *domain.Product , err error)
+	Update(id int, pr *domain.Product) (err error)
 }
 
 var (

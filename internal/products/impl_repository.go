@@ -46,3 +46,13 @@ func (rp *repositoryLocal) GetById(id int) (pr *domain.Product, err error) {
 	return
 }
 
+func (rp *repositoryLocal) Update(id int, pr *domain.Product) (err error) {
+	for i, p := range rp.db {
+        if p.ID == id {
+            rp.db[i] = pr
+            return
+        }
+    }
+    err = ErrRepoNotFound
+    return
+}
