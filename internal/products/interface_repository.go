@@ -11,6 +11,7 @@ type Repository interface {
 	GetAll() ([]*domain.Product, error)
 	GetById(id int) (pr *domain.Product, err error)
 	Update(id int, pr *domain.Product) (err error)
+	Delete(id int) (err error)
 }
 
 var(

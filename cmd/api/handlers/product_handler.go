@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"errors"
+	//"fmt"
 	"net/http"
 	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/domain"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/products"
@@ -193,4 +195,29 @@ func (ct *ControllerProduct) UpdatePartial() gin.HandlerFunc{
 		ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": pr})
 	}
       
+}
+
+func (ct *ControllerProduct) Delete() gin.HandlerFunc{
+	return func(ctx *gin.Context) {
+		// request
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+			return
+		}
+
+		// process
+		if err := ct.sv.Delete(id); err != nil {
+			if errors.Is(err, products.ErrServiceNotFound) {
+				ctx.JSON(http.StatusNotFound, gin.H{"message": "product not found"})
+				return
+			}
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "internal error"})
+			return
+		}
+
+		// response
+		//ctx.Header("Location", fmt.Sprintf("/movies/%d", id))
+		ctx.JSON(http.StatusNoContent, nil)
+	}
 }

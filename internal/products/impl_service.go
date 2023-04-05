@@ -50,3 +50,15 @@ func (s *service) Update(id int, pr *domain.Product) (err error) {
     }
     return
 }
+
+func (s *service) Delete(id int) (err error) {
+	err = s.rp.Delete(id)
+    if err!= nil {
+        if err == ErrRepoNotFound {
+            err = ErrServiceNotFound
+            return
+        }
+        err = ErrServiceInternal
+    }
+    return
+}

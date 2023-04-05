@@ -56,3 +56,15 @@ func (rp *repositoryLocal) Update(id int, pr *domain.Product) (err error) {
     err = ErrRepoNotFound
     return
 }
+
+func (rp *repositoryLocal) Delete(id int) (err error) {
+	for i, p := range rp.db {
+        if p.ID == id {
+			//consultar esto no entiendo!! Es porque se borran y se van moviendo los id (autoincrementales)
+            rp.db = append(rp.db[:i], rp.db[i+1:]...)
+            return
+        }
+    }
+    err = ErrRepoNotFound
+    return
+}
