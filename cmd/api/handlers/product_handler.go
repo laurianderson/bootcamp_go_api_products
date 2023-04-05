@@ -2,10 +2,9 @@ package handlers
 
 import (
 	"errors"
-	//"fmt"
+	"os"
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/domain"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/products"
@@ -31,6 +30,12 @@ func(ct *ControllerProduct) Create() gin.HandlerFunc{
 		Price        float64 `json:"price" biding:"required"`
 	}
 	return func(ctx *gin.Context){
+		//add token in the header
+		token := ctx.GetHeader("token")
+		if token != os.Getenv("TOKEN") {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"mesagge": "invalid token"})
+			return
+		}
 		//request
 		var req request
 		if err := ctx.ShouldBindJSON(&req); err != nil {
