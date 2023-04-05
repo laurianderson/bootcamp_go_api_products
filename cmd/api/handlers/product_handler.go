@@ -149,3 +149,48 @@ func (ct *ControllerProduct) Update() gin.HandlerFunc{
 		ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": pr})
 	}
 }
+
+func (ct *ControllerProduct) UpdatePartial() gin.HandlerFunc{
+	return func(ctx *gin.Context) {
+		//request
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+			return
+		}
+
+		// -> get product by id
+		pr, err := ct.sv.GetById(id)
+		if err != nil {
+			if errors.Is(err, products.ErrServiceNotFound) {
+				ctx.JSON(http.StatusNotFound, gin.H{"message": "product not found"})
+				return
+			}
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "internal error"})
+			return
+		}
+		if err := ctx.ShouldBindJSON(&pr); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+			return
+		}
+		pr.ID = id
+
+		//process
+		if err := ct.sv.Update(id, pr); err != nil {
+			if errors.Is(err, products.ErrServiceNotFound) {
+				ctx.JSON(http.StatusNotFound, gin.H{"message": "product not found"})
+				return
+			}
+			if errors.Is(err, products.ErrServiceInvalid) {
+				ctx.JSON(http.StatusUnprocessableEntity, gin.H{"message": "invalid product"})
+				return
+			}
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": "internal error"})
+			return
+		}
+
+		//response
+		ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": pr})
+	}
+      
+}

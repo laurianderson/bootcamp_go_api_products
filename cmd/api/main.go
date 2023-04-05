@@ -28,6 +28,7 @@ func main() {
 		prGroup.GET("", ct.GetAll())
         prGroup.GET("/:id", ct.GetById())
 		prGroup.PUT("/:id", ct.Update())
+		prGroup.PATCH("/:id", ct.UpdatePartial())
 	}
 
 	// run
