@@ -122,7 +122,7 @@ func (ct *ControllerProduct) Update() gin.HandlerFunc{
 			ctx.JSON(http.StatusUnauthorized, gin.H{"mesagge": "invalid token"})
 			return
 		}
-		
+
 		//request
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
@@ -166,6 +166,13 @@ func (ct *ControllerProduct) Update() gin.HandlerFunc{
 
 func (ct *ControllerProduct) UpdatePartial() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
+		//add token in the header
+		token := ctx.GetHeader("token")
+		if token != os.Getenv("TOKEN") {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"mesagge": "invalid token"})
+			return
+		}
+		
 		//request
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
