@@ -10,12 +10,13 @@ func NewRepositoryLocal(db []*domain.Product, lastId int) Repository {
 	}  
 }
 
-
+//Struct
 type repositoryLocal struct {
 	db  []*domain.Product
 	lastId int
 }
 
+//Create new product
 func (rp *repositoryLocal) Create(pr *domain.Product) (lastId int, err error) {
 	// set id
     rp.lastId++
@@ -29,11 +30,12 @@ func (rp *repositoryLocal) Create(pr *domain.Product) (lastId int, err error) {
     return
 }
 
+//Get all the products
 func (rp *repositoryLocal) GetAll() ([]*domain.Product, error) {
 	return rp.db, nil
 }
 
-
+//Find product by id
 func (rp *repositoryLocal) GetById(id int) (pr *domain.Product, err error) {
 	for _, p := range rp.db {
 		if p.ID == id {
@@ -46,6 +48,7 @@ func (rp *repositoryLocal) GetById(id int) (pr *domain.Product, err error) {
 	return
 }
 
+//Update the product, select product by id
 func (rp *repositoryLocal) Update(id int, pr *domain.Product) (err error) {
 	for i, p := range rp.db {
         if p.ID == id {
@@ -57,6 +60,7 @@ func (rp *repositoryLocal) Update(id int, pr *domain.Product) (err error) {
     return
 }
 
+//Delete product by id
 func (rp *repositoryLocal) Delete(id int) (err error) {
 	for i, p := range rp.db {
         if p.ID == id {

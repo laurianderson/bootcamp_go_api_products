@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"errors"
-	"os"
 	"net/http"
 	"strconv"
 	"github.com/gin-gonic/gin"
@@ -10,16 +9,17 @@ import (
 	"github.com/laurianderson/bootcamp_go_api_products/internal/products"
 )
 
-//builder
+//Builder
 func NewControllerProduct(sv products.Service) *ControllerProduct {
 	return &ControllerProduct{sv: sv}
 }
 
-
+//Struct
 type ControllerProduct struct {
 	sv products.Service
 }
 
+//Create new product
 func(ct *ControllerProduct) Create() gin.HandlerFunc{
 	type request struct {
 		Name         string `json:"name" biding:"required"`
@@ -30,12 +30,6 @@ func(ct *ControllerProduct) Create() gin.HandlerFunc{
 		Price        float64 `json:"price" biding:"required"`
 	}
 	return func(ctx *gin.Context){
-		//add token in the header
-		token := ctx.GetHeader("token")
-		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"mesagge": "invalid token"})
-			return
-		}
 		//request
 		var req request
 		if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -66,6 +60,7 @@ func(ct *ControllerProduct) Create() gin.HandlerFunc{
 	}
 }
 
+//Get all the products
 func(ct *ControllerProduct) GetAll() gin.HandlerFunc{
 	return func(ctx *gin.Context){
 		//request
@@ -81,6 +76,7 @@ func(ct *ControllerProduct) GetAll() gin.HandlerFunc{
     }
 }
 
+//Find product by id
 func (ct *ControllerProduct) GetById() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 		//request
@@ -106,6 +102,7 @@ func (ct *ControllerProduct) GetById() gin.HandlerFunc{
 	}
 }
 
+//Update the product, select product by id
 func (ct *ControllerProduct) Update() gin.HandlerFunc{
 	type request struct {
 		Name         string `json:"name" biding:"required"`
@@ -116,13 +113,6 @@ func (ct *ControllerProduct) Update() gin.HandlerFunc{
 		Price        float64 `json:"price" biding:"required"`
 	}
 	return func(ctx *gin.Context) {
-		//add token in the header
-		token := ctx.GetHeader("token")
-		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"mesagge": "invalid token"})
-			return
-		}
-
 		//request
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
@@ -164,15 +154,9 @@ func (ct *ControllerProduct) Update() gin.HandlerFunc{
 	}
 }
 
+//Patch the product, select product by id
 func (ct *ControllerProduct) UpdatePartial() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
-		//add token in the header
-		token := ctx.GetHeader("token")
-		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"mesagge": "invalid token"})
-			return
-		}
-
 		//request
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
@@ -216,15 +200,9 @@ func (ct *ControllerProduct) UpdatePartial() gin.HandlerFunc{
       
 }
 
+//Delete product by id
 func (ct *ControllerProduct) Delete() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
-		//add token in the header
-		token := ctx.GetHeader("token")
-		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"mesagge": "invalid token"})
-			return
-		}
-		
 		// request
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {

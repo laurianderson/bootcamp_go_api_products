@@ -7,9 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/laurianderson/bootcamp_go_api_products/cmd/api/handlers"
+	"github.com/laurianderson/bootcamp_go_api_products/cmd/api/middleware"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/domain"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/products"
-	
 )
 
 func main() {
@@ -42,12 +42,17 @@ func main() {
 	sv.GET("/ping", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "pong")
 	})
+
 	
 	prGroup := sv.Group("/products")
 	{
-		prGroup.POST("", ct.Create())
+
 		prGroup.GET("", ct.GetAll())
         prGroup.GET("/:id", ct.GetById())
+
+		//indicate that the routes that are below the use() before continuing with the function must go through the middleware
+		prGroup.Use(middleware.MiddlewareVerificationToken())
+		prGroup.POST("", ct.Create())
 		prGroup.PUT("/:id", ct.Update())
 		prGroup.PATCH("/:id", ct.UpdatePartial())
 		prGroup.DELETE("/:id", ct.Delete())
