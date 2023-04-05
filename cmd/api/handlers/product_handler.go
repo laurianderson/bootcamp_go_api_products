@@ -4,6 +4,8 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/domain"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/products"
@@ -37,6 +39,13 @@ func(ct *ControllerProduct) Create() gin.HandlerFunc{
 			return
 		}
 
+		//validate expiration
+		valid, _ := validateExpiration(req.Expiration)
+		if !valid {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid expiration"})
+            return
+		}
+
 		//process
 		pr := &domain.Product{
 			Name: req.Name,
@@ -46,6 +55,7 @@ func(ct *ControllerProduct) Create() gin.HandlerFunc{
             Expiration: req.Expiration,
             Price: req.Price,
 		}
+
 		err := ct.sv.Create(pr)
 		if err != nil {
 			if errors.Is(err, products.ErrServiceInvalid) {
@@ -224,4 +234,25 @@ func (ct *ControllerProduct) Delete() gin.HandlerFunc{
 		//ctx.Header("Location", fmt.Sprintf("/movies/%d", id))
 		ctx.JSON(http.StatusNoContent, nil)
 	}
+}
+
+// validateExpiration confirm that the expiration date is valid
+func validateExpiration(exp string) (bool, error) {
+	dates := strings.Split(exp, "/")
+	list := []int{}
+	if len(dates) != 3 {
+		return false, errors.New("invalid expiration date, must be in format: dd/mm/yyyy")
+	}
+	for value := range dates {
+		number, err := strconv.Atoi(dates[value])
+		if err != nil {
+			return false, errors.New("invalid expiration date, must be numbers")
+		}
+		list = append(list, number)
+	}
+	condition := (list[0] < 1 || list[0] > 31) || (list[1] < 1 || list[1] > 12) || (list[2] < 1 || list[2] > 9999)
+	if condition {
+		return false, errors.New("invalid expiration date, date must be between 1 and 31/12/9999")
+	}
+	return true, nil
 }
