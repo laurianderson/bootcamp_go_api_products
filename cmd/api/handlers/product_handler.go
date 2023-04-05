@@ -116,6 +116,13 @@ func (ct *ControllerProduct) Update() gin.HandlerFunc{
 		Price        float64 `json:"price" biding:"required"`
 	}
 	return func(ctx *gin.Context) {
+		//add token in the header
+		token := ctx.GetHeader("token")
+		if token != os.Getenv("TOKEN") {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"mesagge": "invalid token"})
+			return
+		}
+		
 		//request
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
