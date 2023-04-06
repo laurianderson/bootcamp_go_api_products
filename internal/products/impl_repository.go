@@ -1,6 +1,9 @@
 package products
 
-import "github.com/laurianderson/bootcamp_go_api_products/internal/domain"
+
+import (
+	"github.com/laurianderson/bootcamp_go_api_products/internal/domain"
+)
 
 //builder
 func NewRepositoryLocal(db []*domain.Product, lastId int) Repository {
@@ -18,6 +21,11 @@ type repositoryLocal struct {
 
 //Create new product
 func (rp *repositoryLocal) Create(pr *domain.Product) (lastId int, err error) {
+	if !rp.validateCodeValue(pr.Code_Value) {
+		err = ErrRepoNotUnique
+		return  
+	}
+
 	// set id
     rp.lastId++
 	pr.ID = rp.lastId
@@ -71,4 +79,19 @@ func (rp *repositoryLocal) Delete(id int) (err error) {
     }
     err = ErrRepoNotFound
     return
+}
+
+
+// validateCodeValue validate that the code is not repeated
+func (rp *repositoryLocal) validateCodeValue(codeValue string) (bool) {
+	_, err := rp.GetAll()
+	if err != nil {
+		return false
+	}
+	for _, product := range rp.db {
+		if product.Code_Value == codeValue {
+			return false
+		}
+	}
+	return true
 }
