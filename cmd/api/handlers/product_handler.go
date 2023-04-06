@@ -231,8 +231,34 @@ func (ct *ControllerProduct) Delete() gin.HandlerFunc{
 		}
 
 		// response
-		//ctx.Header("Location", fmt.Sprintf("/movies/%d", id))
 		ctx.JSON(http.StatusNoContent, nil)
+	}
+}
+
+//Search product by price condition 
+func (ct *ControllerProduct) SearchPriceGt() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		//request
+		priceParam := ctx.Query("priceGt")
+		price, err := strconv.ParseFloat(priceParam, 64)
+        if err!= nil {
+            ctx.JSON(http.StatusBadRequest, gin.H{"message": "invalid request"})
+            return
+        }
+
+        //process
+        pr, err := ct.sv.SearchPriceGt(price)
+        if err!= nil {
+            if errors.Is(err, products.ErrServiceNotFound) {
+                ctx.JSON(http.StatusNotFound, gin.H{"message": "product not found"})
+                return
+            }
+            ctx.JSON(http.StatusInternalServerError, gin.H{"message": "internal error"})
+            return
+        }
+
+        //response
+		ctx.JSON(http.StatusOK, pr)
 	}
 }
 

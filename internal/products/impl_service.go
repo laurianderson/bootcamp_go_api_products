@@ -68,3 +68,13 @@ func (s *service) Delete(id int) (err error) {
     }
     return
 }
+
+//Search product by price condition
+func (s *service) SearchPriceGt(price float64) ([]*domain.Product, error) {
+	sliceProductFound, err := s.rp.SearchPriceGt(price)
+	if len(sliceProductFound) == 0 {
+		return []*domain.Product{}, err
+	}
+
+	return sliceProductFound, nil
+}

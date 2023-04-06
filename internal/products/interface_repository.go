@@ -5,13 +5,15 @@ import(
 	"errors"
 )
 type Repository interface {
-//crear método para leer el json que usaremos como db temporalmente
-//	ReadJsonDB() []domain.Product
+	//crud
 	Create(pr *domain.Product) (lastId int, err error)
 	GetAll() ([]*domain.Product, error)
 	GetById(id int) (pr *domain.Product, err error)
 	Update(id int, pr *domain.Product) (err error)
 	Delete(id int) (err error)
+
+	//add method search for price 
+	SearchPriceGt(price float64) ([]*domain.Product, error)
 	
 }
 

@@ -1,6 +1,5 @@
 package products
 
-
 import (
 	"github.com/laurianderson/bootcamp_go_api_products/internal/domain"
 )
@@ -81,7 +80,16 @@ func (rp *repositoryLocal) Delete(id int) (err error) {
     return
 }
 
-
+//Search product by price greater than or equal to the given price and return and slice product
+func(rp *repositoryLocal) SearchPriceGt(price float64) ([]*domain.Product, error){
+	var sliceProductFound []*domain.Product
+	for _, p := range rp.db {
+		if p.Price >= price {
+			sliceProductFound = append(sliceProductFound, p)
+        }
+	}
+	return sliceProductFound, ErrRepoNotFound
+}
 // validateCodeValue validate that the code is not repeated
 func (rp *repositoryLocal) validateCodeValue(codeValue string) (bool) {
 	_, err := rp.GetAll()

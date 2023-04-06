@@ -41,6 +41,7 @@ func main() {
 	{
 		prGroup.GET("", ct.GetAll())
         prGroup.GET("/:id", ct.GetById())
+		prGroup.GET("/search", ct.SearchPriceGt())
 
 		// middleware in this routes
 		prGroup.Use(middleware.MiddlewareVerificationToken())
