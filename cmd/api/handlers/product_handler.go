@@ -21,6 +21,15 @@ type ControllerProduct struct {
 	sv products.Service
 }
 
+// @Summary Create product
+// @Tags Products
+// @Description Create a new product
+// @Produce json
+// @Param token header string true "token"
+// @Sucess 201 {object}	model.Album
+// @Failure 400 {object} web.Response
+// @Router /products [POST]
+
 //Create new product
 func(ct *ControllerProduct) Create() gin.HandlerFunc{
 	type request struct {
@@ -70,6 +79,14 @@ func(ct *ControllerProduct) Create() gin.HandlerFunc{
 	}
 }
 
+// @Summary List all products
+// @Tags Products
+// @Description Gets all products
+// @Produce json
+// @Sucess 200 {object}	model.Album
+// @Failure 400 {object} web.Response
+// @Router /products [GET]
+
 //Get all the products
 func(ct *ControllerProduct) GetAll() gin.HandlerFunc{
 	return func(ctx *gin.Context){
@@ -85,6 +102,14 @@ func(ct *ControllerProduct) GetAll() gin.HandlerFunc{
         ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": prs})
     }
 }
+
+// @Summary List product by id 
+// @Tags Products
+// @Description Get product by id
+// @Produce json
+// @Sucess 200 {object}	model.Album
+// @Failure 400 {object} web.Response
+// @Router /products/id [GET]
 
 //Find product by id
 func (ct *ControllerProduct) GetById() gin.HandlerFunc{
@@ -111,6 +136,15 @@ func (ct *ControllerProduct) GetById() gin.HandlerFunc{
 		ctx.JSON(http.StatusOK, gin.H{"message": "success", "data": pr})
 	}
 }
+
+// @Summary Update all product fields
+// @Tags Products
+// @Description Update a product
+// @Produce json
+// @Param token header string true "token"
+// @Sucess 200 {object}	model.Album
+// @Failure 400 {object} web.Response
+// @Router /products/id [UPDATE]
 
 //Update the product, select product by id
 func (ct *ControllerProduct) Update() gin.HandlerFunc{
@@ -164,6 +198,15 @@ func (ct *ControllerProduct) Update() gin.HandlerFunc{
 	}
 }
 
+// @Summary Update partial product fields
+// @Tags Products
+// @Description Update partial product
+// @Produce json
+// @Param token header string true "token"
+// @Sucess 200 {object}	model.Album
+// @Failure 400 {object} web.Response
+// @Router /products/id [PATCH]
+
 //Patch the product, select product by id
 func (ct *ControllerProduct) UpdatePartial() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
@@ -210,6 +253,15 @@ func (ct *ControllerProduct) UpdatePartial() gin.HandlerFunc{
       
 }
 
+// @Summary Delete a product
+// @Tags Products
+// @Description Delete a product by id 
+// @Produce json
+// @Param token header string true "token"
+// @Sucess 204 {object}	model.Album
+// @Failure 400 {object} web.Response
+// @Router /products/id [DELETE]
+
 //Delete product by id
 func (ct *ControllerProduct) Delete() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
@@ -234,6 +286,14 @@ func (ct *ControllerProduct) Delete() gin.HandlerFunc{
 		ctx.JSON(http.StatusNoContent, nil)
 	}
 }
+
+// @Summary Find products by price condition
+// @Tags Products
+// @Description Search a product by filter price
+// @Produce json
+// @Sucess 200 {object}	model.Album
+// @Failure 400 {object} web.Response
+// @Router /products/priceGt [GET]
 
 //Search product by price condition 
 func (ct *ControllerProduct) SearchPriceGt() gin.HandlerFunc {

@@ -10,8 +10,11 @@ import (
 	"github.com/laurianderson/bootcamp_go_api_products/cmd/api/middleware"
 	"github.com/laurianderson/bootcamp_go_api_products/internal/products"
 	"github.com/laurianderson/bootcamp_go_api_products/pkg/store"
+	
 )
-
+// @title GO Bootcamp API
+// @version 1.0
+// @description This API handle products
 func main() {
 	// .env
 	if err := godotenv.Load(("/Users/landerson/Documents/meli_bootcamp/go/bootcamp_go_api_products/config.env")); err != nil {

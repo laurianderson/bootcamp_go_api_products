@@ -1,0 +1,10 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This API handle products",
+        "title": "GO Bootcamp API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {}
+}

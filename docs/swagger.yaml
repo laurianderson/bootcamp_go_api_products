@@ -1,0 +1,7 @@
+info:
+  contact: {}
+  description: This API handle products
+  title: GO Bootcamp API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
